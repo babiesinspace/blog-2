@@ -9,7 +9,29 @@
   </head>
 
   <body>
-    <p class="flash"><%= flash.notice %></p>
-    <%= yield %>
+    <p class="flash">
+      <%= flash.notice %>
+    </p>
+    <nav>
+      
+    </nav>
+    <div id="container">
+      <div id="content">
+        <%= yield %>
+        <hr>
+        <h6>
+          <% if logged_in? %>
+            <%= "Logged in as #{current_user.username}" %>
+            <%= link_to "Log Out", logout_path %>
+            <%= link_to "All Tags", tags_path %>
+            <%= link_to "Main Page", articles_path %>
+          <% else %>
+            <%= link_to "Log In!", login_path %>
+            <%= link_to "All Tags", tags_path %>
+            <%= link_to "Main Page", articles_path %>
+          <% end %>
+        </h6>
+      </div>
+    </div>
   </body>
 </html>

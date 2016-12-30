@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   include ArticlesHelper
+  before_filter :require_login, except: [ :index, :show ]
 
   def index
     @articles = Article.all 
@@ -15,7 +16,7 @@ class ArticlesController < ApplicationController
     @article = Article.new 
   end 
 
-#Is it better to store 'article_params' in helper or private method?
+  #Is it better to store 'article_params' in helper or private method?
   def create
     @article = Article.new(article_params)
     @article.save
@@ -27,6 +28,7 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article = Article.find(params[:id])
+    
     @article.destroy
 
     flash.notice = "Article '#{@article.title}' Deleted!"
@@ -45,6 +47,13 @@ class ArticlesController < ApplicationController
     flash.notice = "Article '#{@article.title}' Updated!"
 
     redirect_to article_path(@article)
-  end 
+  end
+
+#Must update article table to hold author_id reference. Then add feature to only allow editing or
+# deleting on authored posts
+
+  # def authorized_to_modify?
+  #   @article.author_id == current_user
+  # end  
 
 end
